@@ -1,0 +1,23 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: SSH deployment
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run ssh deployment
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd "/home/${{ secrets.USERNAME }}/dev/notify.uno/"
+          git checkout master
+          git pull
+          yarn
+          yarn restart

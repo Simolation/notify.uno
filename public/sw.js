@@ -3,7 +3,7 @@
 self.addEventListener("push", event => {
 
   // executed when receiving a message
-  const data = ev.data.json()
+  const data = event.data.json()
 
   // create and show notification
   event.waitUntil(
