@@ -1,0 +1,24 @@
+{
+  "name": "notify.uno",
+  "version": "1.0.0",
+  "description": "Get notified when your command is done",
+  "main": "app.js",
+  "repository": "https://github.com/Simolation/notify.uno.git",
+  "author": "Simon Osterlehner <simon@osterlehner.de>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "cookie-session": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.9",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "socket.io": "^2.3.0",
+    "web-push": "^3.4.3"
+  },
+  "scripts": {
+    "start": "PORT=3005 pm2 start app.js --name 'notify.uno' -i max",
+    "restart": "pm2 reload 'notify.uno'"
+  }
+}
