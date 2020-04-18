@@ -23,7 +23,7 @@ const userSchema = new Schema({
     },
     familyName: {
       type: String,
-      required: true
+      required: false
     }
   },
   email: {
