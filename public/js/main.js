@@ -14,6 +14,7 @@ var app = new Vue({
     notificationStatus: Notification.permission,
 
     // ui things
+    initialized: false,
     subscriptionToggleDisabled: true,
     notificationsSidebar: true
   },
@@ -41,7 +42,7 @@ var app = new Vue({
     },
 
     broserSupportsNotifications: function () {
-      return ("Notification" in window)
+      return this.getOSName() !== 'iOS' && ("Notification" in window)
     },
 
     browserSupportsBackgroundNotifications: function () {
@@ -220,6 +221,8 @@ var app = new Vue({
       this.subscription = await this.registration.pushManager.getSubscription()
       this.subscriptionToggleDisabled = false
     }
+
+    this.initialized = true
   }
 })
 

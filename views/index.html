@@ -11,8 +11,8 @@
 
     <title>notify.uno</title>
 
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+    <link href="/css/tailwind.min.css" rel="stylesheet" />
+    <link href="/css/tailwind-ui.min.css" rel="stylesheet" />
 
     <style>
       .fade-enter-active, .fade-leave-active {
@@ -34,6 +34,14 @@
         transform: translateX(1000px);
       }
 
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .no-scrollbar {
+        -ms-overflow-style: none;
+      }
+
       .w-sidebar {
         width: 100%;
       }
@@ -47,6 +55,17 @@
   </head>
   <body class="bg-gray-100">
     <div id="app">
+      <!-- Overlay while initializing vue -->
+      <transition name="fade">
+        <div v-if="!initialized" class="fixed bottom-0 inset-x-0 px-4 pb-6 z-40 ease-out duration-300">
+          <div class="fixed inset-0 transition-opacity">
+            <div class="absolute inset-0" style="background: #131315;"></div>
+          </div>
+        </div>
+      </transition>
+      <!-- /End overlay while initializing vue -->
+
+      <!-- Notification permission modal -->
       <transition name="fade">
         <div v-if="showNotificationWindow" class="fixed bottom-0 inset-x-0 px-4 pb-6 sm:inset-0 sm:p-0 sm:flex sm:items-center sm:justify-center z-30 ease-out duration-300">
           <div class="fixed inset-0 transition-opacity">
@@ -82,11 +101,12 @@
           </div>
         </div>
       </transition>
+      <!-- /End notification permission modal -->
 
       <div class="h-screen flex lg:flex-row" :class="{ 'overflow-hidden': notificationsSidebar }">
 
         <!-- Notifications sidebar -->
-        <div class="flex lg:flex-shrink-0 h-screen" :class="{ 'hidden': !notificationsSidebar }">
+        <div class="flex lg:flex-shrink-0 h-screen lg:shadow-lg transition ease-in-out duration-150" :class="{ 'hidden': !notificationsSidebar }">
           <div class="flex flex-col pt-5 w-sidebar" style="background-color: #131315;">
             <a href="/" class="px-3 sm:px-6 flex justify-center lg:justify-start items-center flex-shrink-0 text-5xl tracking-tight leading-10 font-extrabold text-white sm:text-5xl sm:leading-none">
               notify.uno
@@ -104,7 +124,7 @@
                   <p class="px-6 py-4 text-gray-500 rounded-md" style="background-color: #222222;">No notifications yet</p>
                 </div>
 
-                <transition-group v-else name="list" class="flex-1 overflow-x-hidden px-3 lg:px-6 pb-4" tag="div">
+                <transition-group v-else name="list" class="flex-1 overflow-x-hidden no-scrollbar px-3 lg:px-6 pb-4" tag="div">
                   <div v-for="(notification, index) in notifications" :key="notification._id" class="px-4 py-4 flex items-start rounded-md" :class="{ 'mt-4': index != 0 }" style="background-color: #222222;">
                     <div class="bg-blue-500 w-10 h-10 flex-shrink-0 rounded-md flex justify-center items-center" style="margin-top: 2px;">
                       <img src="/bell.svg" class="w-6 h-6" />
@@ -133,8 +153,8 @@
                     </h2>
                   </div>
                   <div class="flex md:ml-4">
-                    <span class="shadow-sm rounded-md">
-                      <a href="/auth/logout" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out">
+                    <span class="rounded-md">
+                      <a href="/auth/logout" type="button" class="inline-flex items-center px-4 py-2 text-sm leading-5 font-medium rounded-md text-gray-700 hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:text-gray-800 active:bg-gray-50 transition duration-150 ease-in-out">
                         Logout
                       </a>
                     </span>
@@ -170,7 +190,7 @@
                     </div>
 
                     <!-- Background notifications -->
-                    <div v-id="browserSupportsBackgroundNotifications" class="mt-4 rounded-md bg-blue-100 px-6 py-5 sm:flex sm:items-start sm:justify-between">
+                    <div v-if="browserSupportsBackgroundNotifications" class="mt-4 rounded-md bg-blue-100 px-6 py-5 sm:flex sm:items-start sm:justify-between">
                       <div>
                         <h3 class="text-md leading-5 font-medium text-gray-700" id="receive-notifications-title">
                           Background notifications
@@ -301,9 +321,9 @@
       </div>
     </div>
 
-    <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/vue.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/main.js"></script>
+    <script src="/js/main.js"></script>
   </body>
 </html>
