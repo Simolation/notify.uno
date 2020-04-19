@@ -1,14 +1,15 @@
 // init .env
-require('dotenv').config();
+require('dotenv').config()
 
+const compression = require('compression')
 const express = require('express')
 const cookieSession = require('cookie-session')
 const passport = require('passport')
 
 // set up web push to send notifications
 const webpush = require('web-push')
-webpush.setGCMAPIKey(process.env.FCM_KEY);
-webpush.setVapidDetails('mailto:' + process.env.EMAIL, process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
+webpush.setGCMAPIKey(process.env.FCM_KEY)
+webpush.setVapidDetails('mailto:' + process.env.EMAIL, process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 
 // load all database related stuff
 require('./src/db')
@@ -16,6 +17,9 @@ require('./src/passport')
 
 // create express server
 const app = express()
+
+// use compression
+app.use(compression())
 
 // set up login sessions
 const session = cookieSession({
@@ -37,7 +41,7 @@ app.use(passport.session())
 const server = require('http').createServer(app)
 const io = require("socket.io")(server)
 
-// handle routes
+// handle routes and logic
 require('./src/logic')(app, io, session, webpush);
 
 // Start the server on the given port
