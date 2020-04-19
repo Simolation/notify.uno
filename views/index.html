@@ -55,6 +55,17 @@
   </head>
   <body class="bg-gray-100">
     <div id="app">
+      <!-- Overlay while initializing vue -->
+      <transition name="fade">
+        <div v-if="!initialized" class="fixed bottom-0 inset-x-0 px-4 pb-6 z-40 ease-out duration-300">
+          <div class="fixed inset-0 transition-opacity">
+            <div class="absolute inset-0" style="background: #131315;"></div>
+          </div>
+        </div>
+      </transition>
+      <!-- /End overlay while initializing vue -->
+
+      <!-- Notification permission modal -->
       <transition name="fade">
         <div v-if="showNotificationWindow" class="fixed bottom-0 inset-x-0 px-4 pb-6 sm:inset-0 sm:p-0 sm:flex sm:items-center sm:justify-center z-30 ease-out duration-300">
           <div class="fixed inset-0 transition-opacity">
@@ -90,11 +101,12 @@
           </div>
         </div>
       </transition>
+      <!-- /End notification permission modal -->
 
       <div class="h-screen flex lg:flex-row" :class="{ 'overflow-hidden': notificationsSidebar }">
 
         <!-- Notifications sidebar -->
-        <div class="flex lg:flex-shrink-0 h-screen lg:shadow-lg" :class="{ 'hidden': !notificationsSidebar }">
+        <div class="flex lg:flex-shrink-0 h-screen lg:shadow-lg transition ease-in-out duration-150" :class="{ 'hidden': !notificationsSidebar }">
           <div class="flex flex-col pt-5 w-sidebar" style="background-color: #131315;">
             <a href="/" class="px-3 sm:px-6 flex justify-center lg:justify-start items-center flex-shrink-0 text-5xl tracking-tight leading-10 font-extrabold text-white sm:text-5xl sm:leading-none">
               notify.uno
@@ -178,7 +190,7 @@
                     </div>
 
                     <!-- Background notifications -->
-                    <div v-id="browserSupportsBackgroundNotifications" class="mt-4 rounded-md bg-blue-100 px-6 py-5 sm:flex sm:items-start sm:justify-between">
+                    <div v-if="browserSupportsBackgroundNotifications" class="mt-4 rounded-md bg-blue-100 px-6 py-5 sm:flex sm:items-start sm:justify-between">
                       <div>
                         <h3 class="text-md leading-5 font-medium text-gray-700" id="receive-notifications-title">
                           Background notifications
