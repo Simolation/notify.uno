@@ -19,6 +19,7 @@
     "web-push": "^3.4.3"
   },
   "scripts": {
+    "dev": "nodemon app.js",
     "start": "PORT=3005 pm2 start app.js --name 'notify.uno' -i max",
     "restart": "pm2 reload 'notify.uno'"
   }
