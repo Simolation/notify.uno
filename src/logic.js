@@ -2,6 +2,7 @@ const express = require('express')
 const passport = require('passport')
 
 const mongoose = require('mongoose')
+const User = mongoose.model('User')
 const Token = mongoose.model('Token')
 const Notification = mongoose.model('Notification')
 const Subscription = mongoose.model('Subscription')
@@ -184,6 +185,34 @@ module.exports = (app, io, session, webpush) => {
     await Subscription.deleteOne({ userId: req.user._id, 'body.endpoint': req.body.endpoint })
 
     res.json({ status: 'successful' })
+  })
+
+
+  // get some basic usage statistics
+  app.get('/api/statistics/:key', async (req, res) => {
+
+    if (!process.env.STATISTICS_KEY) {
+      res.status(400).json({ status: 'Statistics disabled' })
+      return
+    }
+
+    // check if key is valid
+    if (!req.params.key || req.params.key != process.env.STATISTICS_KEY) {
+      res.status(401).json({ status: 'Unauthorized' })
+      return
+    }
+
+    const userCount = await User.countDocuments({})
+    const tokenCount = await Token.countDocuments({})
+    const notificationCount = await Notification.countDocuments({})
+    const subscriptionCount = await Subscription.countDocuments({})
+
+    
+    res.json({ status: 'successful', data: { 
+      userCount, 
+      tokenCount,
+      notificationCount, 
+      subscriptionCount }})
   })
 
 
