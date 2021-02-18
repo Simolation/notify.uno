@@ -12,15 +12,18 @@
     "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.9.9",
+    "mongoose": "^5.11.17",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "socket.io": "^2.4.0",
-    "web-push": "^3.4.3"
+    "socket.io": "^3.1.1",
+    "web-push": "^3.4.4"
   },
   "scripts": {
     "dev": "nodemon app.js",
     "start": "PORT=3005 pm2 start app.js --name 'notify.uno' -i max",
     "restart": "pm2 reload 'notify.uno'"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
